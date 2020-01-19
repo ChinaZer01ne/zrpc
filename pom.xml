@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github</groupId>
-    <artifactId>com.github.zrpc</artifactId>
+    <artifactId>zrpc</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>zrpc-server</module>
