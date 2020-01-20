@@ -1,8 +1,8 @@
 package com.github.zrpc.proxy.factory;
 
-import com.github.zrpc.proxy.factory.ProxyFactory;
-import com.github.zrpc.proxy.jdk.JavaProxyInvocationHandler;
+import com.github.zrpc.proxy.jdk.RpcProxyInvocationHandler;
 
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
 /**
@@ -11,13 +11,13 @@ import java.lang.reflect.Proxy;
  * @since 2020/1/20 0:16
  */
 public class JavaProxyFactory implements ProxyFactory {
-    private Object target;
 
-    public void setTarget(Object target) {
-        this.target = target;
+    @Override
+    public Object createProxy(Class[] interfaces) {
+        return this.createProxy(interfaces, new RpcProxyInvocationHandler());
     }
 
-    public Object createProxy(){
-        return Proxy.newProxyInstance(this.getClass().getClassLoader(), target.getClass().getInterfaces(), new JavaProxyInvocationHandler());
+    public Object createProxy(Class[] interfaces, InvocationHandler invocationHandler) {
+        return Proxy.newProxyInstance(this.getClass().getClassLoader(), interfaces, invocationHandler);
     }
 }

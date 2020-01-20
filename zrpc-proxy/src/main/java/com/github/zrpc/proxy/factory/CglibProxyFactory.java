@@ -1,9 +1,8 @@
 package com.github.zrpc.proxy.factory;
 
-import com.github.zrpc.proxy.cglib.CglibProxyInterceptor;
-import com.github.zrpc.proxy.factory.ProxyFactory;
-import com.github.zrpc.proxy.jdk.JavaProxyInvocationHandler;
+import com.github.zrpc.proxy.cglib.RpcProxyInterceptor;
 import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
 
 import java.lang.reflect.Proxy;
 /**
@@ -12,17 +11,16 @@ import java.lang.reflect.Proxy;
  * @since 2020/1/20 0:16
  */
 public class CglibProxyFactory implements ProxyFactory {
-    private Object target;
 
-    public void setTarget(Object target) {
-        this.target = target;
+    @Override
+    public Object createProxy(Class[] target){
+        return this.createProxy(target[0], new RpcProxyInterceptor());
     }
 
-    public Object createProxy(){
+    public Object createProxy(Class target, MethodInterceptor methodInterceptor){
         Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(target.getClass());
-        enhancer.setCallback(new CglibProxyInterceptor());
+        enhancer.setSuperclass(target);
+        enhancer.setCallback(methodInterceptor);
         return enhancer.create();
     }
-
 }

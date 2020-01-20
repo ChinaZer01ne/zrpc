@@ -38,4 +38,8 @@ public class RpcServer {
             workGroup.shutdownGracefully();
         }
     }
+
+    public static void main(String[] args) {
+        new RpcServer().init();
+    }
 }
