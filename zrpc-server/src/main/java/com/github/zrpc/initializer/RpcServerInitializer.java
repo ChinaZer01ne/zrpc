@@ -1,9 +1,6 @@
 package com.github.zrpc.initializer;
 
-import com.github.zrpc.codec.RpcRequestDecoder;
-import com.github.zrpc.codec.RpcRequestEncoder;
-import com.github.zrpc.codec.RpcResponseDecoder;
-import com.github.zrpc.codec.RpcResponseEncoder;
+import com.github.zrpc.codec.*;
 import com.github.zrpc.codec.handler.RpcRequestHandler;
 import com.github.zrpc.codec.handler.RpcResponseHandler;
 import io.netty.channel.ChannelInitializer;
@@ -19,6 +16,8 @@ public class RpcServerInitializer extends ChannelInitializer<SocketChannel> {
     protected void initChannel(SocketChannel ch) throws Exception {
 
         ChannelPipeline pipeline = ch.pipeline();
+
+        pipeline.addLast(new MessageDispatchDecoder());
 
         pipeline.addLast(new RpcRequestEncoder());
         pipeline.addLast(new RpcRequestDecoder());

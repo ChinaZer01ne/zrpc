@@ -1,5 +1,6 @@
 package com.github.zrpc;
 
+import com.github.zrpc.container.mock.ServiceContainer;
 import com.github.zrpc.initializer.RpcServerInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -40,6 +41,7 @@ public class RpcServer {
     }
 
     public static void main(String[] args) {
+        ServiceContainer.mockService();
         new RpcServer().init();
     }
 }

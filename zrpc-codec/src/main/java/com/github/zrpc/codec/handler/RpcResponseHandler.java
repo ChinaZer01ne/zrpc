@@ -12,7 +12,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 public class RpcResponseHandler extends SimpleChannelInboundHandler<RpcResponse> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, RpcResponse msg) throws Exception {
-
-
+        // RpcResultCollector应该放在那一层
+        RpcResultCollector.getRpcResponseMap().get("1").add(msg);
     }
 }

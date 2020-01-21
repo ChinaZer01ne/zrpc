@@ -6,6 +6,7 @@ import com.github.zrpc.serialize.KryoSerializer;
 import com.github.zrpc.serialize.SerializeSelector;
 import com.github.zrpc.serialize.Serializer;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 
@@ -21,12 +22,14 @@ public class RpcResponseEncoder extends MessageToByteEncoder<RpcResponse> {
     @Override
     protected void encode(ChannelHandlerContext ctx, RpcResponse msg, ByteBuf out) throws Exception {
 
+
         // This is response
         out.writeInt(2);
 
         // use KryoSerializer
         Serializer serializer = SerializeSelector.select(2);
 
+        out.writeInt(2);
         byte[] bytes = serializer.serialize(msg);
 
         // Rpc response length
@@ -34,6 +37,7 @@ public class RpcResponseEncoder extends MessageToByteEncoder<RpcResponse> {
 
         // Rpc response data
         out.writeBytes(bytes);
+
 
     }
 }

@@ -2,10 +2,14 @@ package com.github.zrpc.proxy.jdk;
 
 import com.github.zrpc.RpcClient;
 import com.github.zrpc.protocol.RpcRequest;
+import com.github.zrpc.protocol.RpcResponse;
 import com.github.zrpc.proxy.RpcRequestWrapper;
+import com.github.zrpc.codec.handler.RpcResultCollector;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.concurrent.SynchronousQueue;
+
 /**
  * proxy class handler
  * @author Zer01ne
@@ -26,11 +30,11 @@ public class RpcProxyInvocationHandler implements InvocationHandler {
         RpcRequest request = RpcRequestWrapper.wrapper(method, args);
         System.out.println("jdk proxy before");
         client.init();
+        SynchronousQueue<RpcResponse> responseQueue = new SynchronousQueue<>();
+        RpcResultCollector.getRpcResponseMap().put("1", responseQueue);
         client.sendRpcRequest(request);
-        //Object result = method.invoke(target, args);
+        RpcResponse take = responseQueue.take();
         System.out.println("jdk proxy after");
-
-        Object result = null;
-        return result;
+        return take.getResult();
     }
 }

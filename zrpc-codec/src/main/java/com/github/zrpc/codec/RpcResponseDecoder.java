@@ -30,10 +30,6 @@ public class RpcResponseDecoder extends ByteToMessageDecoder {
             return;
         }
 
-        if (in.readableBytes() < serializeTypeLength) {
-            in.resetReaderIndex();
-            return;
-        }
         // serialize type
         int serializeType = in.readInt();
 
@@ -44,13 +40,16 @@ public class RpcResponseDecoder extends ByteToMessageDecoder {
             return;
         }
 
-        if (in.readableBytes() < receiveDataLength) {
+        // serialize type
+        int dataLength = in.readInt();
+
+        if (in.readableBytes() < dataLength) {
             in.resetReaderIndex();
             return;
         }
 
         // rpc request read
-        byte[] bytes = new byte[receiveDataLength];
+        byte[] bytes = new byte[dataLength];
         in.readBytes(bytes);
 
         Serializer serializer = SerializeSelector.select(serializeType);

@@ -15,10 +15,10 @@ public class RpcRequestWrapper {
         RpcRequest request = new RpcRequest();
         request.setServiceName("从注册中心获取");
         request.setHeader("携带参数");
-        request.setClassName("class");
-        request.setMethodName("method");
-        request.setParameterType(new String[]{});
-        request.setParameter(new Object[]{});
+        request.setClassName("ProducerService");
+        request.setMethodName("add");
+        request.setParameterType(new String[]{"java.lang.Integer", "java.lang.Integer"});
+        request.setParameter(new Object[]{1,2});
         return request;
     }
 }

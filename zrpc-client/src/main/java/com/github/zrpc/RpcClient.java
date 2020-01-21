@@ -11,12 +11,20 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.SynchronousQueue;
+
 /**
  * rpc client
  * @author Zer01ne
  * @since 2020/1/18 23:13
  */
 public class RpcClient {
+
+
+
     /**
      * hold current channel
      * */
@@ -34,19 +42,21 @@ public class RpcClient {
         try {
             ChannelFuture future = bootstrap.connect("127.0.0.1", 8888).sync();
             channel = future.channel();
-            channel.closeFuture().sync();
+            //channel.closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }finally {
-            group.shutdownGracefully();
+            //group.shutdownGracefully();
         }
     }
     /**
      * send wrapper request
      * @param request
      * */
-    public void sendRpcRequest(RpcRequest request) {
+    public void sendRpcRequest(RpcRequest request) throws InterruptedException {
+
         channel.writeAndFlush(request);
+
     }
 
 }

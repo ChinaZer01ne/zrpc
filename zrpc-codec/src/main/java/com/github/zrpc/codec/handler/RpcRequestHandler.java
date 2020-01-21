@@ -29,11 +29,12 @@ public class RpcRequestHandler extends SimpleChannelInboundHandler<RpcRequest> {
         String[] parameterType = msg.getParameterType();
         String serviceName = msg.getServiceName();
         // 增加线程池，异步处理
-        Map<String, Object> service = ServiceContainer.getServiceMap();
+        Map<String, Object> service = ServiceContainer.getSimpleServiceMap();
         Object o = service.get(className);
         List<Class<?>> collect = Arrays.asList(parameterType).stream().map(s -> {
             try {
-                return Class.forName(s);
+                return this.getClass().getClassLoader().loadClass(s);
+                //return Class.forName(s);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -46,6 +47,6 @@ public class RpcRequestHandler extends SimpleChannelInboundHandler<RpcRequest> {
 
         response.setHeader("携带参数");
         response.setResult(result);
-        ctx.write(response);
+        ctx.writeAndFlush(response);
     }
 }

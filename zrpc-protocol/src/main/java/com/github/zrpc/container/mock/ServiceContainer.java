@@ -17,20 +17,26 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ServiceContainer {
 
     private static Map<String, Object> serviceMap = new ConcurrentHashMap<>();
+    private static Map<String, Object> simpleServiceMap = new ConcurrentHashMap<>();
 
-    public void publishService(Class clazz, Object impl) {
+    public static void publishService(Class clazz, Object impl) {
         serviceMap.put(clazz.getName(), impl);
+        simpleServiceMap.put(clazz.getSimpleName(), impl);
     }
 
     public static Map<String, Object> getServiceMap() {
         return Collections.unmodifiableMap(serviceMap);
     }
 
+    public static Map<String, Object> getSimpleServiceMap() {
+        return Collections.unmodifiableMap(simpleServiceMap);
+    }
+
     private ServiceContainer() {}
 
-    public void mockService() {
-        this.publishService(ProducerService.class, new ProducerServiceImpl());
-        this.publishService(ConsumerService.class, new ConsumerServiceImpl());
+    public static void mockService() {
+        publishService(ProducerService.class, new ProducerServiceImpl());
+        publishService(ConsumerService.class, new ConsumerServiceImpl());
     }
 
 }
